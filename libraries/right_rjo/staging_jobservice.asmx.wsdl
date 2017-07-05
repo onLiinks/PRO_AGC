@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://jobtools.rightstaging.com/services" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://jobtools.rightstaging.com/services" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This service provides methods for Jobs managing on Right Management JobTools website</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://jobtools.rightstaging.com/services">
+      <s:element name="JobServiceAction">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Job" type="tns:ArrayOfJobInformationRequest" />
+            <s:element minOccurs="1" maxOccurs="1" name="EmployerID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfJobInformationRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="JobInformationRequest" nillable="true" type="tns:JobInformationRequest" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="JobInformationRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Action" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="JobTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="JobDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CandidateProfile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CandidateSkills" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PositionTypeID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PositionTypeDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IndustrySectorID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="IndustrySectorDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SalaryUpper" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SalaryLower" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="PublishDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExpiryDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="LocationID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocationDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmployerJobReferenceNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApplicationContactName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApplicationPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApplicationEmail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApplicationWebsite" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="Action">
+        <s:restriction base="s:string">
+          <s:enumeration value="add" />
+          <s:enumeration value="update" />
+          <s:enumeration value="delete" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="JobServiceActionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JobServiceActionResult" type="tns:ArrayOfJobInformationResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfJobInformationResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="JobInformationResponse" nillable="true" type="tns:JobInformationResponse" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="JobInformationResponse">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Action" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmployerJobReferenceNumber" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActionSuccessful" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IgnoreCreatingBadJob" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="JobServiceActionSoapIn">
+    <wsdl:part name="parameters" element="tns:JobServiceAction" />
+  </wsdl:message>
+  <wsdl:message name="JobServiceActionSoapOut">
+    <wsdl:part name="parameters" element="tns:JobServiceActionResponse" />
+  </wsdl:message>
+  <wsdl:portType name="JobServiceSoap">
+    <wsdl:operation name="JobServiceAction">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates, updates and deletes jobs (depend up field Action of Job's element)</wsdl:documentation>
+      <wsdl:input message="tns:JobServiceActionSoapIn" />
+      <wsdl:output message="tns:JobServiceActionSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="JobServiceHttpGet" />
+  <wsdl:portType name="JobServiceHttpPost" />
+  <wsdl:binding name="JobServiceSoap" type="tns:JobServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="JobServiceAction">
+      <soap:operation soapAction="http://jobtools.rightstaging.com/services/JobServiceAction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="JobServiceSoap12" type="tns:JobServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="JobServiceAction">
+      <soap12:operation soapAction="http://jobtools.rightstaging.com/services/JobServiceAction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="JobServiceHttpGet" type="tns:JobServiceHttpGet">
+    <http:binding verb="GET" />
+  </wsdl:binding>
+  <wsdl:binding name="JobServiceHttpPost" type="tns:JobServiceHttpPost">
+    <http:binding verb="POST" />
+  </wsdl:binding>
+  <wsdl:service name="JobService">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This service provides methods for Jobs managing on Right Management JobTools website</wsdl:documentation>
+    <wsdl:port name="JobServiceSoap" binding="tns:JobServiceSoap">
+      <soap:address location="http://jobtools.rightstaging.com/services/jobservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="JobServiceSoap12" binding="tns:JobServiceSoap12">
+      <soap12:address location="http://jobtools.rightstaging.com/services/jobservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="JobServiceHttpGet" binding="tns:JobServiceHttpGet">
+      <http:address location="http://jobtools.rightstaging.com/services/jobservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="JobServiceHttpPost" binding="tns:JobServiceHttpPost">
+      <http:address location="http://jobtools.rightstaging.com/services/jobservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

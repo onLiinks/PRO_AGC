@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Yannick :
+J'ai ajouté le schéma : http://www.w3.org/2005/05/xmlmime car il est impossible de le recuperer sur w3.org
+-->
+<wsdl:definitions xmlns:nsm="http://schemas.microsoft.com/Message" xmlns:ns2011_05="http://www.taleo.com/ws/integration/toolkit/2011/05" xmlns:ns2005_07="http://www.taleo.com/ws/integration/toolkit/2005/07" xmlns:tns="http://www.taleo.com/ws/integration/toolkit/2011/05/management" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsa="http://www.w3.org/2005/03/addressing" xmlns:ai="http://www.taleo.com/ws/integration/toolkit/2005/07/action/import" xmlns:ae="http://www.taleo.com/ws/integration/toolkit/2005/07/action/export" xmlns:ns="http://www.w3.org/2005/05/xmlmime" targetNamespace="http://www.taleo.com/ws/integration/toolkit/2011/05/management">
+	<wsdl:types>
+            <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+           targetNamespace="http://www.w3.org/2005/05/xmlmime" >
+
+  <xs:attribute name="contentType">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" >
+      <xs:minLength value="3" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name="expectedContentTypes" type="xs:string" />
+
+  <xs:complexType name="base64Binary" >
+    <xs:simpleContent>
+        <xs:extension base="xs:base64Binary" >
+            <xs:attribute ref="xmime:contentType" />
+        </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="hexBinary" >
+    <xs:simpleContent>
+        <xs:extension base="xs:hexBinary" >
+            <xs:attribute ref="xmime:contentType" />
+        </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+</xs:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:nsxmlmime="http://www.w3.org/2005/05/xmlmime" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.taleo.com/ws/integration/toolkit/2011/05/management">
+			<xsd:import namespace="http://www.taleo.com/ws/integration/toolkit/2011/05"/>
+			<xsd:import namespace="http://www.taleo.com/ws/integration/toolkit/2005/07/action/import"/>
+			<xsd:import namespace="http://www.taleo.com/ws/integration/toolkit/2005/07/action/export"/>
+			<xsd:import namespace="http://www.w3.org/2005/05/xmlmime"/>
+			<xsd:import namespace="http://addressing.taleo.com/ReturnAttachments"/>
+			<xsd:import namespace="http://schemas.microsoft.com/Message"/>
+			<xsd:element name="suspend">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="messageKey" nillable="true" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="suspendResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" type="xsd:boolean"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="resume">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="messageKey" nillable="true" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="resumeResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" type="xsd:boolean"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getDocumentByKey">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="messageKey" nillable="true" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getDocumentByKeyResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:Document"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLargeDocumentByKey">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="messageKey" nillable="true" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLargeDocumentByKeyResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="Document" nillable="true" type="nsm:StreamBody" nsxmlmime:expectedContentTypes="application/octet-stream"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getDocumentByIdentifier">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="identifier" nillable="true" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getDocumentByIdentifierResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:Document"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getMessageByIdentifier">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="identifier" nillable="true" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getMessageByIdentifierResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:IntegrationMessage"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getMessageByKey">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="messageKey" nillable="true" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getMessageByKeyResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:IntegrationMessage"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="submitDocument">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:Document"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="submitDocumentResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:IntegrationMessage"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="submitLargeDocument">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="Document" nillable="true" type="nsm:StreamBody" nsxmlmime:expectedContentTypes="application/octet-stream"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="submitLargeDocumentResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:IntegrationMessage"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="listMessages">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="fromIndex" type="xsd:long"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="toIndex" type="xsd:long"/>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:IntegrationMessageCriteria"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="listMessagesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" ref="ns2011_05:IntegrationMessage"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.taleo.com/ws/integration/toolkit/2011/05" elementFormDefault="qualified" attributeFormDefault="unqualified">
+			<xsd:complexType name="Document">
+				<xsd:annotation>
+					<xsd:documentation>A document is a generic container that holds the information elements of the message.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Attributes" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The attributes represent document level information elements.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="Attribute" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:annotation>
+											<xsd:documentation>An attribute is a document level information element.</xsd:documentation>
+										</xsd:annotation>
+										<xsd:simpleContent>
+											<xsd:extension base="xsd:string">
+												<xsd:attribute name="name" type="xsd:string" use="required" form="unqualified">
+													<xsd:annotation>
+														<xsd:documentation>The attribute name uniquely identifies it among the attributes collection of a document.</xsd:documentation>
+													</xsd:annotation>
+												</xsd:attribute>
+											</xsd:extension>
+										</xsd:simpleContent>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="Content">
+						<xsd:annotation>
+							<xsd:documentation>The document content represents the record level information elements. This type of information in the document content is dependent on the processing context. As specified by the schema, the Content element always contains exactly one child element which is the root of the content. Each immediate child of this element is consider a record in the Taleo Connect terminology. This size of the information in this element may be large, the Taleo Connect server is tuned to handle this eventuality.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:any namespace="##any" processContents="lax"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="ExportErrors" type="ns2011_05:ExportErrors" nillable="true"/>
+			<xsd:complexType name="ExportErrors">
+				<xsd:annotation>
+					<xsd:documentation>The Content export errors. This can only appear in the context of an export and will always contain only one error element.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Error" type="ns2011_05:Error" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Error">
+				<xsd:annotation>
+					<xsd:documentation>The Error element containing the error code, subcode and reason elements.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Code" type="xsd:string"/>
+					<xsd:element name="Subcode" type="xsd:string"/>
+					<xsd:element name="Reason" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="IntegrationMessage">
+				<xsd:annotation>
+					<xsd:documentation>An integration message is the main entity handled by the Taleo Connect technology. Managed messages represent a wrapper around an integration document containing the actual integration instructions that specifies the connectivity and communication information.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="MessageKey" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The message key is an globally unique identifier generated by the Taleo Connect Server that is only to be used internally within the Taleo product instance.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="CorrelationKey" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The correlation key is the message key of the related message in integration process (request or response depending on the nature of the message), this is only to be used internally within the Taleo product instance.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="MessageID" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The message identifier is an external driven identifier for the message that is provided by the caller for request messages and generated by the Taleo Connect server for response type messages. When generated by the Taleo Connect server, the identifier value is guaranteed to be globally unique. The same restriction should apply when a called supplies such a value..</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ConversationID" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The conversation identifier is an additional identifier offered to link message together in a non-restrictive manner. There are no business rules attached to this value in the Taleo Connect server other than to set this value with the value of the request message conversation identifier when creating a response message (if such a value is present).</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="State" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The message state indicates its processing state within the Taleo Connect server. The specific values are described in the main Taleo Connect documentation.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Target" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The message target indicates how the Taleo Connect server is to process the message. The specific values are described in the main Taleo Connect documentation.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Format" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The message format indicates the envelope format of the message. The specific values are described in the main Taleo Connect documentation.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ApplicationCode" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="OwnerUserName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="ServiceName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="MethodName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="ServiceID" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>For managed documents, this value indicates the business service invoked when processing the integration document. It is the value provided in the WS-Addressing action property.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Managed" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The managed flag indicates whether a message contains an integration document.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="CreationDate" type="xsd:dateTime" minOccurs="0"/>
+					<xsd:element name="LastModificationDate" type="xsd:dateTime" minOccurs="0"/>
+					<xsd:element name="Document" minOccurs="0">
+						<xsd:complexType>
+							<xsd:annotation>
+								<xsd:documentation>The document is a high-level representation of the integration document, except for the actual content.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:sequence>
+								<xsd:element name="RecordCount" type="xsd:integer">
+									<xsd:annotation>
+										<xsd:documentation>The total number of integration instructions present in the message (instructions can be viewed as results when the message is a response).</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="RecordIndex" type="xsd:integer">
+									<xsd:annotation>
+										<xsd:documentation>The total number of instructions currently processed through the Taleo Connect server. The range of this value is 0 to n, where n is the RecordCount value.</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Attributes">
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
+												<xsd:complexType>
+													<xsd:sequence>
+														<xsd:element name="Name" type="xsd:string"/>
+														<xsd:element name="Value" type="xsd:string"/>
+													</xsd:sequence>
+												</xsd:complexType>
+											</xsd:element>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="Attributes" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="Namespace" type="xsd:string"/>
+											<xsd:element name="Name" type="xsd:string"/>
+											<xsd:element name="Value" type="xsd:string"/>
+											<xsd:element name="AttributeType" type="xsd:string"/>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="HistoryItems" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="HistoryItem" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="Sequence" type="xsd:integer">
+												<xsd:annotation>
+													<xsd:documentation>The sequence of the history item.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="InitialState" type="xsd:integer">
+												<xsd:annotation>
+													<xsd:documentation>Refers to the message state.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="FinalState" type="xsd:integer">
+												<xsd:annotation>
+													<xsd:documentation>Refers to the message state.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="UserName" type="xsd:string"/>
+											<xsd:element name="CreationDate" type="xsd:dateTime"/>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="IntegrationMessage" type="ns2011_05:IntegrationMessage" nillable="true"/>
+			<xsd:complexType name="IntegrationMessageCriteria">
+				<xsd:annotation>
+					<xsd:documentation>Criteria to refine search.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:any namespace="##any" processContents="lax"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="IntegrationMessageCriteria" type="ns2011_05:IntegrationMessageCriteria" nillable="true"/>
+			<xsd:element name="Document" type="ns2011_05:Document" nillable="true"/>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.taleo.com/ws/integration/toolkit/2005/07/action/export" elementFormDefault="qualified" attributeFormDefault="unqualified">
+			<xsd:element name="ExportTXML" type="ae:ExportTXML" nillable="true"/>
+			<xsd:complexType name="ExportTXML">
+				<xsd:annotation>
+					<xsd:documentation>The Content of an export if the T-XML mode was used. This could be anything.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="ExportQuery" type="ae:ExportQuery" nillable="true"/>
+			<xsd:complexType name="ExportQuery">
+				<xsd:sequence>
+					<xsd:any namespace="##any" processContents="lax"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="ExportXML" type="ae:ExportXML" nillable="true"/>
+			<xsd:complexType name="ExportXML">
+				<xsd:annotation>
+					<xsd:documentation>The Content of an export if the XML mode was used. This will consist of 0 to many record elements.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="record" type="ae:record" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="ExportCSVEntity" type="ae:ExportCSVEntity" nillable="true"/>
+			<xsd:complexType name="ExportCSVEntity">
+				<xsd:annotation>
+					<xsd:documentation>The Content of an export if the CSVEntity mode was used. This will consist of one data element of type string.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="data" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="ExportCSV" type="ae:ExportCSV" nillable="true"/>
+			<xsd:complexType name="ExportCSV">
+				<xsd:annotation>
+					<xsd:documentation>The Content of an export if the CSV mode was used. This will consist of one data element of type string.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="data" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="record">
+				<xsd:annotation>
+					<xsd:documentation>A record element used in the context of a xml mode export. This will consist of 0 to many field elements.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="field" type="ae:field" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="field">
+				<xsd:annotation>
+					<xsd:documentation>A field element. This is usualy a children of a record element. It consist of 0 to many string elements that will have a name attribute of type string.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleContent>
+					<xsd:extension base="xsd:string">
+						<xsd:attribute name="name" type="xsd:string"/>
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.taleo.com/ws/integration/toolkit/2005/07/action/import">
+			<xsd:element name="ImportDocument" nillable="true" type="ai:ImportDocument"/>
+			<xsd:complexType name="ImportDocument">
+				<xsd:sequence>
+					<xsd:any namespace="##any" processContents="lax"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="ImportResult" nillable="true" type="ai:ImportResult"/>
+			<xsd:complexType name="ImportResult">
+				<xsd:sequence>
+					<xsd:element name="Record" type="ai:Record" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Record">
+				<xsd:sequence>
+					<xsd:element name="Index" type="xsd:integer"/>
+					<xsd:element name="Identifier" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="Status" type="xsd:string"/>
+					<xsd:element name="TransactionType" type="xsd:string"/>
+					<xsd:element name="ExceptionInfo" type="ai:ExceptionInfo" minOccurs="0"/>
+					<xsd:element name="Return" type="ai:Return" minOccurs="0"/>
+					<xsd:element name="Errors" type="ai:Errors" minOccurs="0"/>
+					<xsd:element name="Warnings" type="ai:Warnings" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="Record" type="ai:Record"/>
+			<xsd:complexType name="ExceptionInfo">
+				<xsd:sequence>
+					<xsd:element name="ExceptionMessage" type="xsd:string"/>
+					<xsd:element name="ExceptionStackTrace" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Return">
+				<xsd:sequence>
+					<xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Errors">
+				<xsd:sequence>
+					<xsd:element name="Error" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Warnings">
+				<xsd:sequence>
+					<xsd:element name="Warning" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.taleo.com/ws/integration/toolkit/2005/07">
+			<xsd:complexType name="WebServiceDetail">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="code" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="message" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="stackTrace" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="WebServiceFault" type="ns2005_07:WebServiceDetail"/>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.w3.org/2005/03/addressing">
+			<xsd:complexType name="AttributedURIType">
+				<xsd:simpleContent>
+					<xsd:extension base="xsd:anyURI">
+						<xsd:anyAttribute namespace="##other" processContents="lax"/>
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="ReferenceParametersType">
+				<xsd:sequence>
+					<xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##other" processContents="lax"/>
+			</xsd:complexType>
+			<xsd:element name="MessageID" type="wsa:TaleoMessageID"/>
+			<xsd:complexType name="TaleoMessageID">
+				<xsd:simpleContent>
+					<xsd:extension base="wsa:AttributedURIType"/>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="wsaHeaderReplyToAddress">
+				<xsd:sequence>
+					<xsd:element name="Address" type="wsa:AttributedURIType" fixed="http://www.taleo.com/ws/integration/toolkit/2005/07/addressing/queue"/>
+					<xsd:element name="ReferenceParameters" type="wsa:ReferenceParametersType" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##other" processContents="lax"/>
+			</xsd:complexType>
+			<xsd:element name="ReplyTo" type="wsa:wsaHeaderReplyToAddress"/>
+			<xsd:element name="Action" type="wsa:TaleoAction"/>
+			<xsd:complexType name="TaleoAction">
+				<xsd:simpleContent>
+					<xsd:extension base="wsa:AttributedURIType"/>
+				</xsd:simpleContent>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://addressing.taleo.com/ReturnAttachments">
+			<xsd:annotation>
+				<xsd:documentation>This element is used to specify if we want a web service response in an attachment or not. The element needs to be place in a ReferenceParameters element.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="ReturnAttachments" type="xsd:boolean"/>
+		</xsd:schema>
+		<xsd:schema xmlns:tns="http://schemas.microsoft.com/Message" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/Message">
+			<xs:simpleType name="StreamBody">
+				<xs:restriction base="xs:base64Binary"/>
+			</xs:simpleType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="getMessageByIdentifierRequest">
+		<wsdl:part name="parameters" element="tns:getMessageByIdentifier">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="suspendRequest">
+		<wsdl:part name="parameters" element="tns:suspend">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getMessageByKeyResponse">
+		<wsdl:part name="parameters" element="tns:getMessageByKeyResponse">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getDocumentByKeyResponse">
+		<wsdl:part name="parameters" element="tns:getDocumentByKeyResponse">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLargeDocumentByKeyResponse">
+		<wsdl:part name="parameters" element="tns:getLargeDocumentByKeyResponse">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getMessageByIdentifierResponse">
+		<wsdl:part name="parameters" element="tns:getMessageByIdentifierResponse">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="submitDocumentRequest">
+		<wsdl:part name="parameters" element="tns:submitDocument">
+   </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="submitDocumentResponse">
+		<wsdl:part name="parameters" element="tns:submitDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="submitLargeDocumentRequest">
+		<wsdl:part name="parameters" element="tns:submitLargeDocument">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="submitLargeDocumentResponse">
+		<wsdl:part name="parameters" element="tns:submitLargeDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="submitDocumentRequestHeaderMsgID">
+		<wsdl:part name="request_header_MsgID" element="wsa:MessageID"/>
+	</wsdl:message>
+	<wsdl:message name="submitDocumentRequestHeaderReplyToAddress">
+		<wsdl:part name="request_header_ReplyToAddress" element="wsa:ReplyTo"/>
+	</wsdl:message>
+	<wsdl:message name="submitDocumentRequestHeaderAction">
+		<wsdl:part name="request_header_Action" element="wsa:Action">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="suspendResponse">
+		<wsdl:part name="parameters" element="tns:suspendResponse">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getDocumentByKeyRequest">
+		<wsdl:part name="parameters" element="tns:getDocumentByKey">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLargeDocumentByKeyRequest">
+		<wsdl:part name="parameters" element="tns:getLargeDocumentByKey">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="resumeResponse">
+		<wsdl:part name="parameters" element="tns:resumeResponse"/>
+	</wsdl:message>
+	<wsdl:message name="resumeRequest">
+		<wsdl:part name="parameters" element="tns:resume"/>
+	</wsdl:message>
+	<wsdl:message name="WebServiceFault">
+		<wsdl:part name="WebServiceFault" element="ns2005_07:WebServiceFault"/>
+	</wsdl:message>
+	<wsdl:message name="getMessageByKeyRequest">
+		<wsdl:part name="parameters" element="tns:getMessageByKey"/>
+	</wsdl:message>
+	<wsdl:message name="listMessagesResponse">
+		<wsdl:part name="parameters" element="tns:listMessagesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="listMessagesRequest">
+		<wsdl:part name="parameters" element="tns:listMessages"/>
+	</wsdl:message>
+	<wsdl:portType name="IntegrationManagementServicePortType">
+		<wsdl:operation name="suspend">
+			<wsdl:input name="suspendRequest" message="tns:suspendRequest"/>
+			<wsdl:output name="suspendResponse" message="tns:suspendResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="resume">
+			<wsdl:input name="resumeRequest" message="tns:resumeRequest"/>
+			<wsdl:output name="resumeResponse" message="tns:resumeResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getDocumentByKey">
+			<wsdl:input name="getDocumentByKeyRequest" message="tns:getDocumentByKeyRequest"/>
+			<wsdl:output name="getDocumentByKeyResponse" message="tns:getDocumentByKeyResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getLargeDocumentByKey">
+			<wsdl:input name="getLargeDocumentByKeyRequest" message="tns:getLargeDocumentByKeyRequest"/>
+			<wsdl:output name="getLargeDocumentByKeyResponse" message="tns:getLargeDocumentByKeyResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getMessageByIdentifier">
+			<wsdl:input name="getMessageByIdentifierRequest" message="tns:getMessageByIdentifierRequest"/>
+			<wsdl:output name="getMessageByIdentifierResponse" message="tns:getMessageByIdentifierResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getMessageByKey">
+			<wsdl:input name="getMessageByKeyRequest" message="tns:getMessageByKeyRequest"/>
+			<wsdl:output name="getMessageByKeyResponse" message="tns:getMessageByKeyResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="submitDocument">
+			<wsdl:input name="submitDocumentRequest" message="tns:submitDocumentRequest"/>
+			<wsdl:output name="submitDocumentResponse" message="tns:submitDocumentResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="submitLargeDocument">
+			<wsdl:input name="submitLargeDocumentRequest" message="tns:submitLargeDocumentRequest"/>
+			<wsdl:output name="submitLargeDocumentResponse" message="tns:submitLargeDocumentResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="listMessages">
+			<wsdl:input name="listMessagesRequest" message="tns:listMessagesRequest"/>
+			<wsdl:output name="listMessagesResponse" message="tns:listMessagesResponse"/>
+			<wsdl:fault name="WebServiceFault" message="tns:WebServiceFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="IntegrationManagementServiceHttpBinding" type="tns:IntegrationManagementServicePortType">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="suspend">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#suspend"/>
+			<wsdl:input name="suspendRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="suspendResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="resume">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#resume"/>
+			<wsdl:input name="resumeRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="resumeResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getDocumentByKey">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#getDocumentByKey"/>
+			<wsdl:input name="getDocumentByKeyRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getDocumentByKeyResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getLargeDocumentByKey">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#getLargeDocumentByKey"/>
+			<wsdl:input name="getLargeDocumentByKeyRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getLargeDocumentByKeyResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getMessageByIdentifier">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#getMessageByIdentifier"/>
+			<wsdl:input name="getMessageByIdentifierRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getMessageByIdentifierResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getMessageByKey">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#getMessageByKey"/>
+			<wsdl:input name="getMessageByKeyRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getMessageByKeyResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="submitDocument">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#submitDocument"/>
+			<wsdl:input name="submitDocumentRequest">
+				<wsdlsoap:header message="tns:submitDocumentRequestHeaderMsgID" part="request_header_MsgID" use="literal"/>
+				<wsdlsoap:header message="tns:submitDocumentRequestHeaderReplyToAddress" part="request_header_ReplyToAddress" use="literal"/>
+				<wsdlsoap:header message="tns:submitDocumentRequestHeaderAction" part="request_header_Action" use="literal"/>
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="submitDocumentResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="submitLargeDocument">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#submitLargeDocument"/>
+			<wsdl:input name="submitLargeDocumentRequest">
+				<wsdlsoap:header message="tns:submitDocumentRequestHeaderMsgID" part="request_header_MsgID" use="literal"/>
+				<wsdlsoap:header message="tns:submitDocumentRequestHeaderReplyToAddress" part="request_header_ReplyToAddress" use="literal"/>
+				<wsdlsoap:header message="tns:submitDocumentRequestHeaderAction" part="request_header_Action" use="literal"/>
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="submitLargeDocumentResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="listMessages">
+			<wsdlsoap:operation soapAction="http://www.taleo.com/ws/integration/toolkit/2011/05/management/IntegrationManagementService#listMessages"/>
+			<wsdl:input name="listMessagesRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="listMessagesResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="WebServiceFault">
+				<wsdlsoap:fault name="WebServiceFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="IntegrationManagementService">
+		<wsdl:port name="IntegrationManagementServiceHttpPort" binding="tns:IntegrationManagementServiceHttpBinding">
+			<wsdlsoap:address location="https://stgmanpogroupfr.taleo.net/enterprise/ServiceDispatcher?ServiceName=IntegrationManagementService"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

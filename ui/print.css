@@ -1,0 +1,45 @@
+/* *************************************
+     gestion de la mise en page
+***************************************** */
+#conteneur
+{
+    width:100%;
+}
+
+#innerWrapper 
+{ 
+	width: 768px;
+	margin: 20px 20px 20px 20px;
+}
+
+#content 
+{ 
+    margin: 0px 0px 0px 0px;
+	padding: 0px 15px;
+	height: 100%;
+}
+
+#leftMenu 
+{ 
+    display: none
+}
+
+#rightMenu 
+{ 
+    display: none;
+}
+
+#footer 
+{ 
+    margin-bottom: 20px;
+}
+
+#header 
+{ 
+    padding: 20px 20px 0px 80px;
+}
+
+#menuRecherche 
+{ 
+    padding: 20px 20px 0px 80px;
+}

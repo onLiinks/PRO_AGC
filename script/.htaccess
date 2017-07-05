@@ -1,0 +1,18 @@
+allow from 127.0.0.1
+allow from 192.168.0.5
+allow from 192.168.197.1
+allow from 192.168.2.103
+allow from 213.56.106.10
+Deny from all
+<Files changementMission.php>
+Allow from all
+</Files>
+<Files verifDoublonCandidature.php>
+Allow from all
+</Files>
+<Files renewCD.php>
+Allow from all
+</Files>
+<Files exportOSC.php>
+Allow from all
+</Files>

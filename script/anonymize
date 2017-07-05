@@ -1,0 +1,111 @@
+<?php
+
+die('Be cautious');
+
+require_once '../config/config.php';
+require_once AUTOLOAD_URL;
+require_once FUNCTION_URL;
+
+set_time_limit(300);
+
+/**
+ * Transforme une chaine textuelle
+ * */
+function anonymise($str, $colName) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZéàîï';
+    $newVal = '';
+    for ($i = 0; $i < strlen($str); $i++) {
+        if ($i < strlen($colName)) {
+            $newVal .= substr($colName, $i, 1);
+        } else {
+            if (substr($str, $i, 1) == ' ') {
+                    $newVal .= ' ';
+            } else {
+                    $newVal .= $characters[rand(0, strlen($characters) - 1)];
+            }
+        }
+    }
+    return $newVal;
+}
+
+/**
+ * Liste des tables/champs à anonymiser
+ * */
+$toAnonymise = array(
+
+	'demande_changement' => array(
+		'ancien',
+		'nouveau'
+		),
+	'formateur' => array (
+		'tel_fixe',
+		'tel_portable',
+		'mail',
+		'page_web',
+		'competence'
+	),
+	'session' => array(
+		'nom_session',
+		'description'
+	),
+	'utilisateur' => array(
+		'blocnotes',
+		'nom',
+		'prenom'
+	),
+	'ordre_mission' => array (
+		'telephone',
+		'lieu_mission',
+		'contact',
+		'responsable',
+		'tache',
+		'frais',
+		'indemnites_repas',
+		'commentaire_horaire',
+		'commentaire_astreinte',
+	),
+	'contrat_delegation' => array (
+		'commentaire_horaire',
+		'commentaire_indemnite',
+		'commentaire_astreinte',
+		'lieu_mission',
+		'contact_principal',
+		'fonction_cprincipal',
+		'adresse_facturation',
+		'tache',
+		'compte',
+		'mode_reglement',
+		'contact1',
+		'commercial',
+		'nom_ressource',
+		'prenom_ressource',
+		'st_commentaire',
+		'intitule',
+	),
+	
+);
+
+
+//connection BDD
+$db = connecter();
+
+
+//on passe sur chaque colonne
+foreach ($toAnonymise as $table => $listCol) {
+	foreach ($listCol as $col) {
+		$colId = 'id_'.$table;//à adaper si l'id est différent
+		$requete = 'SELECT '.$colId.','.$col.' FROM '.$table.';';
+		$result = $db->query($requete);
+		while ($ligne = $result->fetchRow()) {//puis sur chaque valeur de colonne
+			$oldVal = $ligne->$col;
+			$id = $ligne->$colId;
+			$newVal = anonymise($oldVal, $col);
+			$requete = 'UPDATE '.$table.' SET '.$col.'="'.$newVal.'" 
+			WHERE '.$colId.'="'.$id.'";';
+			$db->query($requete);
+		}
+	}
+}
+
+
+?>
